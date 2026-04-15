@@ -8,14 +8,17 @@ fn main() {
 
     let secret_number = rand::random_range(1..=100);
 
-    println!("The secret number is: {secret_number}");
+    // println!("The secret number is: {secret_number}");
 
     let mut game_continue: bool = true;
 
     let exit_words_box = exit_words();
 
+    let mut attempts_count: u64 = 0;
+
     while game_continue {
 
+        attempts_count += 1;
         println!("Please input your guess.");
 
         let mut guess: String = String::new();
@@ -38,6 +41,8 @@ fn main() {
             },
         };
 
+        println!("You guessed: {guess}");
+
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
@@ -46,8 +51,9 @@ fn main() {
                 game_continue = false;
             },
         }
-        println!("You guessed: {guess}\n");
+        println!("");      
     }
+    println!("Number of attempts: {attempts_count}");
 }
 
 fn exit_words() -> Box<[String]> {
