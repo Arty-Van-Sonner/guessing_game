@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use std::io;
+use std::{array, io};
 
 // use rand::Rng;
 
@@ -10,21 +10,46 @@ fn main() {
 
     println!("The secret number is: {secret_number}");
 
-    println!("Please input your guess.");
+    let mut game_continue: bool = true;
 
-    let mut guess: String = String::new();
-    
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+    let exit_words_box = exit_words();
 
-    let guess: u32 = guess.trim().parse().expect("Please type a number!");
+    while game_continue {
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("You win!"),
+        println!("Please input your guess.");
+
+        let mut guess: String = String::new();
+        
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+
+        guess = guess.trim().to_string();
+        if exit_words_box.contains(&guess) {
+            println!("End work!");
+            return;
+        }
+
+        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("You win!");
+                game_continue = false;
+            },
+        }
+        println!("You guessed: {guess}\n");
     }
+}
 
-    println!("You guessed: {guess}");
+fn exit_words() -> Box<[String]> {
+    let exit_words: Vec<String> = vec![
+        String::from("exit"),
+        String::from("exit()"),
+        String::from("ex"),
+        String::from("ex()"),
+    ];
+    return exit_words.into_boxed_slice();
 }
