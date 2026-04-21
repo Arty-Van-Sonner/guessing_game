@@ -1,9 +1,23 @@
 use std::cmp::Ordering;
-use std::{array, io};
+use std::{io};
 
 // use rand::Rng;
 
 fn main() {
+    start_game()
+}
+
+fn exit_words() -> Box<[String]> {
+    let exit_words: Vec<String> = vec![
+        String::from("exit"),
+        String::from("exit()"),
+        String::from("ex"),
+        String::from("ex()"),
+    ];
+    return exit_words.into_boxed_slice();
+}
+
+fn start_game() {
     println!("Guess the number!");
 
     let secret_number = rand::random_range(1..=100);
@@ -54,14 +68,4 @@ fn main() {
         println!("");      
     }
     println!("Number of attempts: {attempts_count}");
-}
-
-fn exit_words() -> Box<[String]> {
-    let exit_words: Vec<String> = vec![
-        String::from("exit"),
-        String::from("exit()"),
-        String::from("ex"),
-        String::from("ex()"),
-    ];
-    return exit_words.into_boxed_slice();
 }
